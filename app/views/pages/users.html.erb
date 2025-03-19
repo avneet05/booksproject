@@ -1,0 +1,42 @@
+<%= render 'shared/navbar' %>
+
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-4xl font-bold text-indigo-600 mb-6">Users List</h1>
+
+  <!-- Table Section -->
+  <div class="overflow-x-auto">
+    <table class="min-w-full table-auto border-collapse overflow-hidden shadow-lg rounded-lg">
+      <thead>
+        <tr class="bg-indigo-500 text-white">
+          <th class="px-6 py-3">Name</th>
+          <th class="px-6 py-3">Email</th>
+          <th class="px-6 py-3">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each_with_index do |user, index| %>
+          <tr class="<%= index.even? ? 'bg-gray-50' : 'bg-white' %> hover:bg-indigo-50 transition-all">
+            <td class="border px-6 py-4 text-gray-700"><%= user.name %></td>
+            <td class="border px-6 py-4 text-gray-700"><%= user.email %></td>
+            <td class="border px-6 py-4">
+              <%= link_to 'View Details', user_path(user), class: "text-indigo-500 hover:text-indigo-700 font-semibold" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination Section -->
+  <div class="mt-8 flex justify-center items-center space-x-2">
+    <% if @users.current_page > 1 %>
+      <%= link_to 'Previous', users_path(page: @users.current_page - 1), class: 'px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300' %>
+    <% end %>
+
+    <span class="text-gray-700">Page <%= @users.current_page %> of <%= @users.total_pages %></span>
+
+    <% if @users.next_page %>
+      <%= link_to 'Next', users_path(page: @users.current_page + 1), class: 'px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600' %>
+    <% end %>
+  </div>
+</div>

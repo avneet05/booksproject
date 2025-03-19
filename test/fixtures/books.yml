@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  average_rating: 1.5
+  isbn: MyString
+  isbn13: MyString
+  language_code: MyString
+  num_pages: 1
+  publication_date: 2025-03-07
+  publisher: MyString
+  author: one
+
+two:
+  title: MyString
+  average_rating: 1.5
+  isbn: MyString
+  isbn13: MyString
+  language_code: MyString
+  num_pages: 1
+  publication_date: 2025-03-07
+  publisher: MyString
+  author: two

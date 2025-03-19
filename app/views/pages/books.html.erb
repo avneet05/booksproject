@@ -1,0 +1,77 @@
+<%= render 'shared/navbar' %>
+
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-8 text-indigo-600">📚 Book List</h1>
+
+  <!-- Search and Filter Form -->
+  <form method="get" action="<%= books_path %>" class="flex items-center mb-8 space-x-4">
+    <!-- Search by Book Title -->
+    <input
+      type="text"
+      name="search"
+      placeholder="🔎 Search by book title"
+      value="<%= params[:search] %>"
+      class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none w-1/3"
+    />
+
+    <!-- Filter by Author using Author ID -->
+    <select name="author_id" class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+      <option value="">Select Author</option>
+      <% @authors.each do |author| %>
+        <option value="<%= author.id %>" <%= params[:author_id].to_s == author.id.to_s ? 'selected' : '' %>>
+          <%= author.name %>
+        </option>
+      <% end %>
+    </select>
+
+    <!-- Submit Button -->
+    <button type="submit" class="p-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition">
+      Search
+    </button>
+  </form>
+
+  <!-- Table to Display Books -->
+  <div class="overflow-x-auto">
+    <table class="min-w-full table-auto border-collapse overflow-hidden shadow-lg rounded-lg">
+      <thead>
+        <tr class="bg-indigo-500 text-white">
+          <th class="px-6 py-4 text-left">Title</th>
+          <th class="px-6 py-4 text-left">Author</th>
+          <th class="px-6 py-4 text-left">Published Date</th>
+          <th class="px-6 py-4 text-left">Publisher</th>
+          <th class="px-6 py-4 text-left">ISBN</th>
+          <th class="px-6 py-4 text-left">Pages</th>
+          <th class="px-6 py-4 text-left">Ratings</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @books.each_with_index do |book, index| %>
+          <tr class="<%= index.even? ? 'bg-gray-100' : 'bg-white' %> hover:bg-indigo-100 transition">
+            <td class="border px-6 py-4">
+              <%= link_to book.title, book_path(book), class: "text-blue-600 hover:underline" %>
+            </td>
+            <td class="border px-6 py-4"><%= book.author.name %></td>
+            <td class="border px-6 py-4"><%= book.publication_date %></td>
+            <td class="border px-6 py-4"><%= book.publisher %></td>
+            <td class="border px-6 py-4"><%= book.isbn %></td>
+            <td class="border px-6 py-4"><%= book.num_pages %></td>
+            <td class="border px-6 py-4"><%= book.average_rating %> ⭐</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="flex justify-center items-center mt-8 space-x-4">
+    <% if @books.current_page > 1 %>
+      <%= link_to "← Previous", books_path(page: @books.prev_page, search: params[:search], author_id: params[:author_id]), class: "bg-gray-300 text-gray-800 py-2 px-6 rounded-lg hover:bg-gray-400 transition" %>
+    <% end %>
+
+    <span class="text-gray-700 font-semibold"> Page <%= @books.current_page %> of <%= @books.total_pages %> </span>
+
+    <% if @books.next_page %>
+      <%= link_to "Next →", books_path(page: @books.next_page, search: params[:search], author_id: params[:author_id]), class: "bg-indigo-600 text-white py-2 px-6 rounded-lg hover:bg-indigo-700 transition" %>
+    <% end %>
+  </div>
+</div>
